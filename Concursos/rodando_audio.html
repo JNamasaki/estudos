@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Reproduzir Áudio</title>
+</head>
+<body>
+  <h2>Exemplo de áudio com fallback</h2>
+
+  <!-- O áudio -->
+  <audio id="meuAudio" src="/Concursos/Banco de dados aula 1 - Modelagem de dados.mp3" loop></audio>
+
+  <!-- Botão escondido -->
+  <button id="btnSom" style="display:none;">Ativar Som</button>
+
+  <script>
+    const audio = document.getElementById("meuAudio");
+    const botao = document.getElementById("btnSom");
+
+    // tenta tocar automaticamente
+    audio.play().catch(() => {
+      // se o navegador bloquear, mostra o botão
+      botao.style.display = "inline-block";
+    });
+
+    // se o usuário clicar, força o play
+    botao.addEventListener("click", () => {
+      audio.play();
+      botao.style.display = "none";
+    });
+  </script>
+</body>
+</html>

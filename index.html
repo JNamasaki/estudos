@@ -26,12 +26,13 @@
      Aqui você pode adicionar uma lista dinâmica de concursos 
   </ul> -->
 
-    <audio controls>
+    <audio id="meuAudio" controls>
         <source src="/Concursos/Banco de dados aula 1 - Modelagem de dados.mp3" type="audio/mpeg">
         Seu navegador não suporta o elemento de áudio.
     </audio>
-
-    <audio controls>
+    <button onclick="document.getElementById('meuAudio').play()">Tocar música</button>
+   
+    <audio controls autoplay muted loop>
         <source src="/Concursos/Ed_RLacerda_bubblesort.mp3" type="audio/mpeg">
         Seu navegador não suporta o elemento de áudio.
     </audio>
