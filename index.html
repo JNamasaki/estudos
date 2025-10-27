@@ -1,54 +1,202 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playlists de Estudo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
 
-<head> </head>
+    header {
+      background: #1f2937;
+      color: #fff;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
 
+    #app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .playlist {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+      width: 100%;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    .playlist:hover {
+      transform: scale(1.02);
+    }
+
+    .player {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    .voltar {
+      background: #6b7280;
+    }
+
+    .voltar:hover {
+      background: #4b5563;
+    }
+
+    iframe, video {
+      width: 100%;
+      min-height: 400px;
+      max-height: 100%;
+      border-radius: 8px;
+      border: none;
+    }
+
+    @media (max-width: 600px) {
+      iframe, video {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
 <body>
-    <h1>Controle de Concursos</h1>
-    <!-- <form action="/concursos" method="post">
-    <label for="nome">Nome do Concurso:</label>
-    <input type="text" id="nome" name="nome" required><br><br>
+  <header>
+    <h1>📚 Playlists de Estudo</h1>
+  </header>
 
-    <label for="data">Data do Concurso:</label>
-    <input type="date" id="data" name="data" required><br><br>
+  <main id="app">
+    <div id="listaPlaylists"></div>
+    <div id="playerContainer" class="player" style="display:none;">
+      <h2 id="tituloAula"></h2>
+      <div id="conteudo"></div>
+      <div class="controls">
+        <button id="btnAnterior">⬅ Anterior</button>
+        <button class="voltar" id="btnVoltar">🔙 Voltar</button>
+        <button id="btnProximo">Próximo ➡</button>
+      </div>
+    </div>
+  </main>
 
-    <label for="local">Local do Concurso:</label>
-    <input type="text" id="local" name="local" required><br><br>
+  <script>
+    let playlists = [];
+    let playlistAtual = null;
+    let indiceAtual = 0;
 
-    <label for="descricao">Descrição:</label><br>
-    <textarea id="descricao" name="descricao" rows="4" cols="50"></textarea><br><br>
+    async function carregarPlaylists() {
+      const res = await fetch("playlists.json");
+      playlists = await res.json();
+      exibirPlaylists();
+    }
 
-    <input type="submit" value="Adicionar Concurso">
-  </form>
+    function exibirPlaylists() {
+      const lista = document.getElementById("listaPlaylists");
+      lista.innerHTML = "";
 
-  <h2>Lista de Concursos</h2>
-  <ul>
-     Aqui você pode adicionar uma lista dinâmica de concursos 
-  </ul> -->
+      playlists.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "playlist";
+        div.innerHTML = `
+          <h2>${p.titulo}</h2>
+          <p>${p.descricao}</p>
+          <small>${p.itens.length} itens</small>
+        `;
+        div.onclick = () => abrirPlaylist(p);
+        lista.appendChild(div);
+      });
+    }
 
-    <audio id="meuAudio" controls>
-        <source src="./Concursos/Banco de dados aula 1 - Modelagem de dados.mp3" type="audio/mpeg">
-        Seu navegador não suporta o elemento de áudio.
-    </audio>
-    <button onclick="document.getElementById('meuAudio').play()">Tocar música</button>
-   
-    <audio controls autoplay muted loop>
-        <source src="./Concursos/Ed_RLacerda_bubblesort.mp3" type="audio/mpeg">
-        Seu navegador não suporta o elemento de áudio.
-    </audio>
+    function abrirPlaylist(playlist) {
+      playlistAtual = playlist;
+      indiceAtual = Number(localStorage.getItem(`progresso_${playlist.id}`)) || 0;
+      document.getElementById("listaPlaylists").style.display = "none";
+      document.getElementById("playerContainer").style.display = "block";
+      carregarItem();
+    }
 
+    function carregarItem() {
+      const item = playlistAtual.itens[indiceAtual];
+      document.getElementById("tituloAula").innerText = `${item.titulo}`;
 
-    <audio controls>
-        <source src="./Concursos/Ed_RLacerda_InsertionSort.mp3" type="audio/mpeg">
-        Seu navegador não suporta o elemento de áudio.
+      const conteudo = document.getElementById("conteudo");
+      conteudo.innerHTML = "";
 
-    </audio>
+      let elemento;
+      if (item.tipo === "video") {
+        elemento = document.createElement("video");
+        elemento.src = item.arquivo;
+        elemento.controls = true;
+      } else if (item.tipo === "pdf") {
+        elemento = document.createElement("iframe");
+        elemento.src = item.arquivo;
+      } else if (item.tipo === "html") {
+        elemento = document.createElement("iframe");
+        elemento.src = item.arquivo;
+      } else {
+        elemento = document.createElement("p");
+        elemento.textContent = "Tipo não suportado.";
+      }
 
-    <object data="arquivo.pdf" type="application/pdf" width="100%" height="600">
-        <p>Seu navegador não consegue exibir PDF.
-            <a href="../Concursos/curso-258191-aula-00-profs-felipe-mathias-e-raphael-lacerda-313a-completo.pdf">Clique aqui para baixar</a>.
-        </p>
-    </object>
+      conteudo.appendChild(elemento);
+      localStorage.setItem(`progresso_${playlistAtual.id}`, indiceAtual);
+    }
+
+    document.getElementById("btnAnterior").onclick = () => {
+      if (indiceAtual > 0) {
+        indiceAtual--;
+        carregarItem();
+      }
+    };
+
+    document.getElementById("btnProximo").onclick = () => {
+      if (indiceAtual < playlistAtual.itens.length - 1) {
+        indiceAtual++;
+        carregarItem();
+      }
+    };
+
+    document.getElementById("btnVoltar").onclick = () => {
+      document.getElementById("playerContainer").style.display = "none";
+      document.getElementById("listaPlaylists").style.display = "block";
+    };
+
+    carregarPlaylists();
+  </script>
 </body>
-
 </html>

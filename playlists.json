@@ -1,0 +1,70 @@
+[
+  {
+    "id": "banco-de-dados",
+    "titulo": "Banco de dados",
+    "descricao": "Banco de dados relacionais e não relacionais.",
+    "itens": [
+      {
+        "titulo": " Modelagem de dados",
+        "tipo": "video",
+        "arquivo": "Concursos/Banco de dados_aula_1_Modelagem de dados.mp3"
+      },
+      {
+        "titulo": "Variáveis e Tipos",
+        "tipo": "pdf",
+        "arquivo": "Concursos/curso-258191-aula-01-b643.pdf"
+      }
+    ]
+  },
+  {
+    "id": "portugues",
+    "titulo": "Portugues",
+    "descricao": "Portuges do basico ao avançado para concurso.",
+    "itens": [
+      {
+        "titulo": "Ortografia Oficial aula 0 - Fonetica Parte 1",
+        "tipo": "video",
+        "arquivo": "Concursos/Fonetica Parte 1.mp3"
+      },
+      {
+        "titulo": "Ortografia Oficial aula 0 - Fonetica Parte 2",
+        "tipo": "video",
+        "arquivo": "Concursos/Fonetica Parte 1.mp3"
+      },
+      {
+        "titulo": "Ortografia Oficial aula 0 - Silaba Parte 1",
+        "tipo": "video",
+        "arquivo": "Concursos/Silaba parte 1.mp3"
+      },
+      {
+        "titulo": "Portuges 00 - Apostila Completa",
+        "tipo": "pdf",
+        "arquivo": "Concursos/Portugues 00.pdf"
+      }
+    ]
+  },
+  {
+    "id": "Trilha",
+    "titulo": "Trilha Estratégica",
+    "descricao": "Trilha estrategica para cumprir o edital.",
+    "itens": [
+      {
+        "titulo": "Trilha 0 - Comercial",
+        "tipo": "pdf",
+        "arquivo": "Concursos/trilha 00.pdf"
+      }
+    ]
+  },
+    {
+    "id": "Ingles",
+    "titulo": "Ingles",
+    "descricao": ".",
+    "itens": [
+      {
+        "titulo": "Ingles",
+        "tipo": "pdf",
+        "arquivo": "Concursos/Ingles 00.pdf"
+      }
+    ]
+  }
+]
